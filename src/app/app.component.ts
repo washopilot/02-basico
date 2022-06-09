@@ -7,10 +7,7 @@ import { WebsocketService } from './services/websocket.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'basico';
-
   constructor(public wsService: WebsocketService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
