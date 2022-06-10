@@ -10,14 +10,21 @@ import { ChatService } from 'src/app/services/chat.service';
 export class ChatComponent implements OnInit, OnDestroy {
   texto = '';
   mensajesSubscription: Subscription = new Subscription();
+  mensajes: any[] = [];
+  elemento!: HTMLElement;
 
   constructor(public chatService: ChatService) {}
 
   ngOnInit(): void {
+    this.elemento = document.getElementById('chat-mensajes') as HTMLElement;
     this.mensajesSubscription = this.chatService
       .getMessages()
       .subscribe((msg) => {
         console.log(msg);
+        this.mensajes.push(msg);
+        setTimeout(() => {
+          this.elemento.scrollTop = this.elemento.scrollHeight; // Para hacer scroll automático
+        }, 50);
       });
   }
 
@@ -26,7 +33,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   enviar() {
-    console.log('Emitiendo ', this.texto);
+    if (this.texto.trim().length === 0) {
+      return;
+    }
     this.chatService.sendMessage(this.texto);
     this.texto = ''; // limpia el texto del formulario enviado
   }
